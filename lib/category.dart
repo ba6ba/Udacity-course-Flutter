@@ -12,7 +12,9 @@ import 'package:flutter/material.dart';
 ///
 /// The widget is composed on an [Icon] and [Text]. Tapping on the widget shows
 /// a colored [InkWell] animation.
-final BorderRadius _borderRadius = BorderRadius.only(bottomRight : Radius.circular(20));
+final BorderRadius _borderRadius = BorderRadius.vertical(top : Radius.circular(20),
+    bottom: Radius.circular(20)
+);
 
 class Category extends StatelessWidget {
   /// Creates a [Category].
@@ -49,7 +51,7 @@ class Category extends StatelessWidget {
   // See https://docs.flutter.io/flutter/material/Theme-class.html
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+      color: color.withAlpha(80),
       borderRadius: _borderRadius,
       child: Container(
         height: this.categoryHeight,
@@ -66,7 +68,7 @@ class Category extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(16.0),
                   child: Icon(iconLocation, size: 40.0, color: this.color,),
                 ),
                 Center(
@@ -75,7 +77,7 @@ class Category extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 24.0,
-                        color: Colors.black38,
+                        color: Colors.black54,
                       ),
                     )
                 )
