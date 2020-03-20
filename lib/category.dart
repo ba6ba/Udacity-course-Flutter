@@ -7,6 +7,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterudacityapp/unit.dart';
+
+import 'converter_route.dart';
 
 /// A custom [Category] widget.
 ///
@@ -26,6 +29,7 @@ class Category extends StatelessWidget {
   final IconData iconLocation;
   final Color color;
   final double categoryHeight;
+  final List<Unit> units;
 
 
   const Category(
@@ -33,13 +37,37 @@ class Category extends StatelessWidget {
       @required this.name,
       @required this.iconLocation,
       @required this.color,
-      @required this.categoryHeight
+      @required this.categoryHeight,
+      @required this.units
       })
       : assert(name != null),
         assert(iconLocation != null),
         assert(color != null),
         assert(categoryHeight != null),
+        assert(units != null),
         super(key : key);
+
+  /// Navigates to the [ConverterRoute].
+  void _navigateToConverter(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute<Null>(
+      builder: (BuildContext context) {
+        return Scaffold(
+          appBar: AppBar(
+            elevation: 1.0,
+            title: Text(name,
+              style: Theme.of(context).textTheme.headline,
+            ),
+            centerTitle: true,
+            backgroundColor: color,
+          ),
+          body: ConverterRoute(
+            color : color,
+            units : units
+          ),
+        );
+      }
+    ));
+  }
 
   /// Builds a custom widget that shows [Category] information.
   ///
@@ -60,7 +88,7 @@ class Category extends StatelessWidget {
           highlightColor: color,
           borderRadius: _borderRadius,
           onTap: () {
-            //
+            _navigateToConverter(context);
           },
           child: Padding(
             padding: EdgeInsets.all(8.0),

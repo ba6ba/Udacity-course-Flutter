@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterudacityapp/category.dart';
+import 'package:flutterudacityapp/unit.dart';
 
 const _backgroundColor = Color.fromRGBO(0, 40, 140, 30);
 
@@ -29,6 +30,13 @@ class CategoryRoute extends StatelessWidget {
     Colors.red,
   ];
 
+  List<Unit> _retrieveUnitList(String categoryName) {
+    return List.generate(10, (int i) {
+      i += 1;
+      return Unit(name: "$categoryName Unit $i", conversion: i.toDouble());
+    });
+  }
+  
   Widget _categoryWidgets(List<Widget> categoriesList) {
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) => categoriesList[index],
@@ -45,7 +53,9 @@ class CategoryRoute extends StatelessWidget {
         name: _categoryNames[i],
         color: _baseColors[i],
         categoryHeight: 100.0,
-        iconLocation: Icons.access_alarm,));
+        iconLocation: Icons.access_alarm,
+        units: _retrieveUnitList(_categoryNames[i]),
+      ));
     }
 
     final listView = Container(
