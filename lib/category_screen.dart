@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterudacityapp/category.dart';
 import 'package:flutterudacityapp/unit.dart';
 
-const _backgroundColor = Color.fromRGBO(0, 40, 140, 30);
+const _backgroundColor = Colors.white;
 
 class CategoryRoute extends StatelessWidget {
 
@@ -69,7 +69,7 @@ class CategoryRoute extends StatelessWidget {
       backgroundColor: _backgroundColor,
       title: Text('Unit Converter',
         style: TextStyle(
-          color: Colors.white,
+          color: Colors.black26,
           fontSize: 26.0
         ),
       ),
