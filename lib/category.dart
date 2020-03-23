@@ -47,7 +47,7 @@ class Category extends StatelessWidget {
         assert(units != null),
         super(key : key);
 
-  /// Navigates to the [ConverterRoute].
+  /// Navigates to the [ConverterScreen].
   void _navigateToConverter(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
@@ -60,7 +60,7 @@ class Category extends StatelessWidget {
             centerTitle: true,
             backgroundColor: color,
           ),
-          body: ConverterRoute(
+          body: ConverterScreen(
             color : color,
             units : units
           ),

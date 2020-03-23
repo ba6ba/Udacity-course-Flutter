@@ -4,9 +4,15 @@ import 'package:flutterudacityapp/unit.dart';
 
 const _backgroundColor = Colors.white;
 
-class CategoryRoute extends StatelessWidget {
+class CategoryScreen extends StatefulWidget {
+  const CategoryScreen();
 
-  const CategoryRoute();
+  @override
+  _CategoryScreenState createState() => _CategoryScreenState();
+}
+
+class _CategoryScreenState extends State<CategoryScreen> {
+  final categories = <Category>[];
 
   static const _categoryNames = <String>[
     'Length',
@@ -30,13 +36,27 @@ class CategoryRoute extends StatelessWidget {
     Colors.red,
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    for (var i = 0; i < _categoryNames.length; i++) {
+      categories.add(Category(
+        name: _categoryNames[i],
+        color: _baseColors[i],
+        categoryHeight: 100.0,
+        iconLocation: Icons.access_alarm,
+        units: _retrieveUnitList(_categoryNames[i]),
+      ));
+    }
+  }
+
   List<Unit> _retrieveUnitList(String categoryName) {
     return List.generate(10, (int i) {
       i += 1;
       return Unit(name: "$categoryName Unit $i", conversion: i.toDouble());
     });
   }
-  
+
   Widget _categoryWidgets(List<Widget> categoriesList) {
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) => categoriesList[index],
@@ -46,32 +66,18 @@ class CategoryRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categories = <Category>[];
-
-    for(var i = 0; i < _categoryNames.length; i++) {
-      categories.add(Category(
-        name: _categoryNames[i],
-        color: _baseColors[i],
-        categoryHeight: 100.0,
-        iconLocation: Icons.access_alarm,
-        units: _retrieveUnitList(_categoryNames[i]),
-      ));
-    }
-
     final listView = Container(
       color: _backgroundColor,
-      padding: EdgeInsets.symmetric(horizontal : 8.0),
+      padding: EdgeInsets.symmetric(horizontal: 8.0),
       child: _categoryWidgets(categories),
     );
 
     final appBar = AppBar(
       elevation: 0.0,
       backgroundColor: _backgroundColor,
-      title: Text('Unit Converter',
-        style: TextStyle(
-          color: Colors.black26,
-          fontSize: 26.0
-        ),
+      title: Text(
+        'Unit Converter',
+        style: TextStyle(color: Colors.black26, fontSize: 26.0),
       ),
       centerTitle: true,
     );
