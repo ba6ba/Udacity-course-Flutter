@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterudacityapp/category.dart';
+import 'package:flutterudacityapp/category_tile.dart';
 import 'package:flutterudacityapp/unit.dart';
 
 const _backgroundColor = Colors.white;
@@ -12,7 +13,7 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  final categories = <Category>[];
+  final _categories = <Category>[];
 
   static const _categoryNames = <String>[
     'Length',
@@ -65,7 +66,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   void initState() {
     super.initState();
     for (var i = 0; i < _categoryNames.length; i++) {
-      categories.add(Category(
+      _categories.add(Category(
         name: _categoryNames[i],
         color: _baseColors[i],
         categoryHeight: 100.0,
@@ -75,6 +76,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
     }
   }
 
+  // TODO: Fill out this function
+  /// Function to call when a [Category] is tapped.
+  void _onCategoryTap(Category category) {}
+
   List<Unit> _retrieveUnitList(String categoryName) {
     return List.generate(10, (int i) {
       i += 1;
@@ -82,10 +87,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
     });
   }
 
-  Widget _categoryWidgets(List<Widget> categoriesList) {
+  Widget _categoryWidgets() {
     return ListView.builder(
-      itemBuilder: (BuildContext context, int index) => categoriesList[index],
-      itemCount: categoriesList.length,
+      itemBuilder: (BuildContext context, int index) {
+        return CategoryTile(
+          category: _categories[index],
+          onTap: _onCategoryTap,
+        );
+      },
+      itemCount: _categories.length,
     );
   }
 
@@ -94,7 +104,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     final listView = Container(
       color: _backgroundColor,
       padding: EdgeInsets.symmetric(horizontal: 8.0),
-      child: _categoryWidgets(categories),
+      child: _categoryWidgets(),
     );
 
     final appBar = AppBar(
