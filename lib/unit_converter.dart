@@ -125,12 +125,13 @@ class _UnitConverterState extends State<UnitConverter> {
     return Container(
       margin: EdgeInsets.only(top: 16.0),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        border: Border.all(color: Colors.grey[400], width: 1.0),
+        color: widget.category.color['background'],
+        borderRadius: BorderRadius.circular(16.0),
+        border: Border.all(color: Colors.black, width: 1.0),
       ),
       padding: EdgeInsets.symmetric(vertical: 8.0),
       child: Theme(
-        data: Theme.of(context).copyWith(canvasColor: Colors.grey[50]),
+        data: Theme.of(context).copyWith(canvasColor: Colors.white),
         child: DropdownButtonHideUnderline(
           child: ButtonTheme(
             alignedDropdown: true,
@@ -161,7 +162,11 @@ class _UnitConverterState extends State<UnitConverter> {
                     _showValidationError ? 'Invalid number entered' : null,
                 labelText: 'Input',
                 border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0))),
+                  borderSide: BorderSide(
+                    color: Colors.black,
+                    width: 1.0
+                  ),
+                    borderRadius: BorderRadius.circular(16.0))),
             keyboardType: TextInputType.number,
             onChanged: _updateInputValue,
           ),
@@ -192,7 +197,7 @@ class _UnitConverterState extends State<UnitConverter> {
                 labelText: 'Output',
                 labelStyle: Theme.of(context).textTheme.display1,
                 border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0))),
+                    borderRadius: BorderRadius.circular(16.0))),
           ),
           _createDropDown(_toValue.name, _updateToConversion)
         ],

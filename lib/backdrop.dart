@@ -12,6 +12,7 @@ class _BackdropPanel extends StatelessWidget {
   final GestureDragEndCallback onVerticalDragEnd;
   final Widget title;
   final Widget child;
+  final ColorSwatch colorSwatch;
 
   const _BackdropPanel(
       {Key key,
@@ -19,12 +20,14 @@ class _BackdropPanel extends StatelessWidget {
       this.title,
       this.child,
       this.onVerticalDragEnd,
-      this.onVerticalDragUpdate})
+      this.onVerticalDragUpdate,
+      this.colorSwatch})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: colorSwatch['background'],
       elevation: 2.0,
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(16.0),
@@ -65,7 +68,7 @@ class _BackdropTitle extends AnimatedWidget {
   final Widget backTitle;
 
   const _BackdropTitle(
-      {Key key, Listenable listenable, this.backTitle, this.frontTitle})
+      {Key key, Listenable listenable, this.frontTitle, this.backTitle})
       : super(key: key, listenable: listenable);
 
   @override
@@ -88,7 +91,7 @@ class _BackdropTitle extends AnimatedWidget {
           ),
           Opacity(
             opacity: CurvedAnimation(
-                parent: ReverseAnimation(animation),
+                parent: animation,
                 curve: Interval(0.5, 1.0)
             ).value,
             child: frontTitle,
@@ -172,7 +175,7 @@ class _BackdropState extends State<Backdrop> with
   void _toggleBackdropPanelVisibility() {
     FocusScope.of(context).requestFocus(FocusNode());
     _controller.fling(
-      velocity: _backdropPanelVisible ? -kFlingVelocity : kFlingVelocity;
+      velocity: _backdropPanelVisible ? -kFlingVelocity : kFlingVelocity
     );
   }
 
@@ -180,6 +183,9 @@ class _BackdropState extends State<Backdrop> with
     final RenderBox renderBox = _backdropKey.currentContext.findRenderObject();
     return renderBox.size.height;
   }
+
+  // By design: the panel can only be opened with a swipe. To close the panel
+  // the user must either tap its heading or the backdrop's menu icon.
 
   void _handleDragUpdate(DragUpdateDetails dragUpdateDetails) {
     if(_controller.isAnimating || _controller.status == AnimationStatus
@@ -202,7 +208,7 @@ class _BackdropState extends State<Backdrop> with
     }
     else {
       _controller.fling(
-          velocity: _controller.value > 0.5 ? -kFlingVelocity : kFlingVelocity
+          velocity: _controller.value < 0.5 ? -kFlingVelocity : kFlingVelocity
       );
     }
   }
@@ -214,13 +220,13 @@ class _BackdropState extends State<Backdrop> with
 
     Animation<RelativeRect> panelAnimation = RelativeRectTween(
       begin: RelativeRect.fromLTRB(0.0, panelTop, 0.0, panelTop -
-          panelTitleHeight),
+          panelSize.height),
       end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0)
     ).animate(_controller.view);
 
     return Container(
       key: _backdropKey,
-      color: widget.currentCategory.color,
+      color: Colors.white,
       child: Stack(
         children: <Widget>[
           widget.backPanel,
@@ -232,6 +238,7 @@ class _BackdropState extends State<Backdrop> with
               onVerticalDragEnd: _handleDragEnd,
               title: Text(widget.currentCategory.name),
               child: widget.frontPanel,
+              colorSwatch: widget.currentCategory.color,
             ),
           )
         ],
@@ -243,7 +250,7 @@ class _BackdropState extends State<Backdrop> with
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: widget.currentCategory.color,
+        backgroundColor: Colors.white,
         elevation: 0.0,
         leading: IconButton(
           onPressed: _toggleBackdropPanelVisibility,
@@ -261,6 +268,7 @@ class _BackdropState extends State<Backdrop> with
       body: LayoutBuilder(
         builder: _buildStack,
       ),
+      resizeToAvoidBottomPadding: false,
     );
   }
 }
