@@ -23,6 +23,7 @@ class _UnitConverterState extends State<UnitConverter> {
   String _outputValue = '';
   List<DropdownMenuItem> _dropDownMenuItems = List();
   bool _showValidationError = false;
+  final _inputKey = GlobalKey(debugLabel: 'InputText');
 
   @override
   void initState() {
@@ -54,6 +55,9 @@ class _UnitConverterState extends State<UnitConverter> {
       _fromValue = widget.category.units[0];
       _toValue = widget.category.units[1];
     });
+    if (_inputValue != null) {
+      _updateConversion();
+    }
   }
 
   /// Clean up conversion; trim trailing zeros, e.g. 5.500 -> 5.5, 10.0 -> 10
@@ -155,17 +159,29 @@ class _UnitConverterState extends State<UnitConverter> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           TextField(
+            key: _inputKey,
             style: Theme.of(context).textTheme.display1,
             decoration: InputDecoration(
                 labelStyle: Theme.of(context).textTheme.title,
                 errorText:
                     _showValidationError ? 'Invalid number entered' : null,
                 labelText: 'Input',
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                    width: 1.0
-                  ),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Colors.black,
+                        width: 1.0
+                    ),
+                    borderRadius: BorderRadius.circular(16.0)
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Colors.red,
+                        width: 1.0
+                    ),
+                    borderRadius: BorderRadius.circular(16.0)
+                ),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black, width: 1.0),
                     borderRadius: BorderRadius.circular(16.0))),
             keyboardType: TextInputType.number,
             onChanged: _updateInputValue,
@@ -194,24 +210,41 @@ class _UnitConverterState extends State<UnitConverter> {
               style: Theme.of(context).textTheme.display1,
             ),
             decoration: InputDecoration(
-                labelText: 'Output',
-                labelStyle: Theme.of(context).textTheme.display1,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16.0))),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: 1.0, color: Colors.black),
+                  borderRadius: BorderRadius.circular(16.0)),
+              labelText: 'Output',
+              labelStyle: Theme.of(context).textTheme.display1,
+            ),
           ),
           _createDropDown(_toValue.name, _updateToConversion)
         ],
       ),
     );
 
-    final converter = Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[input, arrows, output],
+    final converter = SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[input, arrows, output],
+      ),
     );
 
     return Padding(
       padding: _padding,
-      child: converter,
+      child: OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
+          if (Orientation.portrait == orientation) {
+            return converter;
+          } else {
+            return Center(
+              child: Container(
+                width: 450.0,
+                child: converter,
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }

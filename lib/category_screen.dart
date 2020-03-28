@@ -104,23 +104,49 @@ class _CategoryScreenState extends State<CategoryScreen> {
     });
   }
 
-  Widget _categoryWidgets() {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
-        return CategoryTile(
-          category: _categories[index],
-          onTap: _onCategoryTap,
-        );
-      },
-      itemCount: _categories.length,
-    );
+  Widget _categoryWidgets(Orientation deviceOrientation) {
+    if(Orientation.portrait == deviceOrientation) {
+      return ListView.separated(
+        itemBuilder: (BuildContext context, int index) {
+          return CategoryTile(
+            category: _categories[index],
+            onTap: _onCategoryTap,
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return SizedBox(
+            height: 12,
+          );
+        },
+        padding: EdgeInsets.only(left: 5.0, right: 5.0),
+        physics: BouncingScrollPhysics(),
+        itemCount: _categories.length,
+      );
+    }
+    else {
+      return GridView.count(
+          crossAxisCount: 2,
+        childAspectRatio: 3.0,
+        children: _categories.map((Category category) {
+            return Container(
+              padding: EdgeInsets.all(5.0),
+              child: CategoryTile(
+                category: category,
+                onTap: _onCategoryTap,
+              ),
+            );
+      }).toList(),
+        physics: BouncingScrollPhysics(),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    assert(debugCheckHasMediaQuery(context));
     final listView = Padding(
       padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 48.0),
-      child: _categoryWidgets(),
+      child: _categoryWidgets(MediaQuery.of(context).orientation),
     );
     return Backdrop(
       currentCategory:
