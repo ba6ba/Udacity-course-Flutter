@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutterudacityapp/backdrop.dart';
 import 'package:flutterudacityapp/category.dart';
@@ -16,17 +19,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
   final _categories = <Category>[];
   Category _defaultCategory;
   Category _currentCategory;
-
-  static const _categoryNames = <String>[
-    'Length',
-    'Area',
-    'Volume',
-    'Mass',
-    'Time',
-    'Digital Storage',
-    'Energy',
-    'Currency',
-  ];
 
   static const _baseColors = <ColorSwatch>[
     ColorSwatch(0xFF6AB7A8, {
@@ -73,34 +65,52 @@ class _CategoryScreenState extends State<CategoryScreen> {
   ];
 
   @override
-  void initState() {
-    super.initState();
-    for (var i = 0; i < _categoryNames.length; i++) {
-      var category = Category(
-        name: _categoryNames[i],
-        color: _baseColors[i],
-        categoryHeight: 100.0,
-        iconLocation: Icons.four_k,
-        units: _retrieveUnitList(_categoryNames[i]),
-      );
-      if (i == 0) {
-        _defaultCategory = category;
-      }
-      _categories.add(category);
+  Future<Void> didChangeDependencies() async {
+    super.didChangeDependencies();
+    // We have static unit conversions located in our
+    // assets/data/regular_units.json
+    if(_categories.isEmpty) {
+      await _retrieveLocalCategories();
     }
+  }
+
+  /// Retrieves a list of [Categories] and their [Unit]s
+  Future<Void> _retrieveLocalCategories() async {
+    // Consider omitting the types for local variables. For more details on Effective
+    // Dart Usage, see https://www.dartlang.org/guides/language/effective-dart/usage
+    final json = DefaultAssetBundle
+        .of(context)
+        .loadString('assets/data/regular_units.json');
+    final data = JsonDecoder().convert(await json);
+    if (data is! Map) {
+      throw ('Data retrieved from API is not a Map');
+    }
+    var categoryIndex = 0;
+    data.keys.forEach((key) {
+      final List<Unit> units =
+      data[key].map<Unit>((dynamic data) => Unit.fromJson(data)).toList();
+
+      var category = Category(
+        categoryHeight: 100.0,
+        name: key,
+        units: units,
+        color: _baseColors[categoryIndex],
+        iconLocation: Icons.four_k,
+      );
+      setState(() {
+        if (categoryIndex == 0) {
+          _defaultCategory = category;
+        }
+        _categories.add(category);
+      });
+      categoryIndex += 1;
+    });
   }
 
   /// Function to call when a [Category] is tapped.
   void _onCategoryTap(Category category) {
     setState(() {
       _currentCategory = category;
-    });
-  }
-
-  List<Unit> _retrieveUnitList(String categoryName) {
-    return List.generate(10, (int i) {
-      i += 1;
-      return Unit(name: "$categoryName Unit $i", conversion: i.toDouble());
     });
   }
 
@@ -143,6 +153,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if(_categories.isEmpty) {
+      return Center(
+        child: Container(
+          width: 180.0,
+          height: 180.0,
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     assert(debugCheckHasMediaQuery(context));
     final listView = Padding(
       padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 48.0),
