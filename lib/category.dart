@@ -21,7 +21,7 @@ class Category{
   /// the UI, and the icon that represents it (e.g. a ruler).
 
   final String name;
-  final IconData iconLocation;
+  final String iconLocation;
   final ColorSwatch color;
   final double categoryHeight;
   final List<Unit> units;

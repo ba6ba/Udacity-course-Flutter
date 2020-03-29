@@ -20,6 +20,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Category _defaultCategory;
   Category _currentCategory;
 
+  static const _icons = <String>[
+    'assets/icons/length.png',
+    'assets/icons/area.png',
+    'assets/icons/volume.png',
+    'assets/icons/mass.png',
+    'assets/icons/time.png',
+    'assets/icons/digital_storage.png',
+    'assets/icons/power.png',
+    'assets/icons/currency.png',
+  ];
+
   static const _baseColors = <ColorSwatch>[
     ColorSwatch(0xFF6AB7A8, {
       'highlight': Color(0xFF6AB7A8),
@@ -95,7 +106,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         name: key,
         units: units,
         color: _baseColors[categoryIndex],
-        iconLocation: Icons.four_k,
+        iconLocation: _icons[categoryIndex],
       );
       setState(() {
         if (categoryIndex == 0) {
