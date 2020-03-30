@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutterudacityapp/api.dart';
 import 'package:flutterudacityapp/backdrop.dart';
 import 'package:flutterudacityapp/category.dart';
 import 'package:flutterudacityapp/category_tile.dart';
@@ -70,7 +71,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     ColorSwatch(0xFFCE9A9A, {
       'highlight': Color(0xFFCE9A9A),
       'splash': Color(0xFFF94D56),
-      'background': Color(0xFFFF9CA1),
+      'background': Color(0xFFE999A3),
       'error': Color(0xFF912D2D),
     }),
   ];
@@ -82,7 +83,39 @@ class _CategoryScreenState extends State<CategoryScreen> {
     // assets/data/regular_units.json
     if(_categories.isEmpty) {
       await _retrieveLocalCategories();
+      await _retrieveApiCategory();
     }
+  }
+  /// Retrieves a [Category] and its [Unit]s from an API on the web
+  Future<List> _retrieveApiCategory() async {
+    setState(() {
+      _categories.add(getApiCategory(List(0)));
+    });
+
+    final api = Api();
+    final jsonUnits = await api.getUnits(apiCategory['route']);
+    // If the API errors out or we have no internet connection, this category
+    // remains in placeholder mode (disabled)
+    if(jsonUnits != null) {
+      final units = <Unit>[];
+      for(var unit in jsonUnits) {
+        units.add(Unit.fromJson(unit));
+      }
+      setState(() {
+        _categories.removeLast();
+        _categories.add(getApiCategory(units));
+      });
+    }
+  }
+
+  Category getApiCategory(List<Unit> units) {
+    return Category(
+        name: apiCategory['name'],
+        units: units,
+        color: _baseColors.last,
+        iconLocation: _icons.last,
+        categoryHeight: 100.0
+    );
   }
 
   /// Retrieves a list of [Categories] and their [Unit]s

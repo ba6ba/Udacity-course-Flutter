@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterudacityapp/api.dart';
 import 'package:flutterudacityapp/category.dart';
 import 'package:flutterudacityapp/unit.dart';
 
@@ -85,11 +86,23 @@ class _UnitConverterState extends State<UnitConverter> {
     return outputNum;
   }
 
-  void _updateConversion() {
-    setState(() {
-      _outputValue =
-          format(_inputValue * (_toValue.conversion / _fromValue.conversion));
-    });
+  Future<void> _updateConversion() async{
+    // Our API has a handy convert function, so we can use that for
+    // the Currency [Category]
+    if(widget.category.name == apiCategory['name']) {
+      final api = Api();
+      final conversion = await api.convert(apiCategory['route'], _inputValue.toString(),
+          _fromValue.name, _toValue.name);
+      setState(() {
+        _outputValue = format(conversion);
+      });
+    }
+    else {
+      setState(() {
+        _outputValue =
+            format(_inputValue * (_toValue.conversion / _fromValue.conversion));
+      });
+    }
   }
 
   void _updateInputValue(String input) {
@@ -169,7 +182,9 @@ class _UnitConverterState extends State<UnitConverter> {
         children: <Widget>[
           TextField(
             key: _inputKey,
-            style: Theme.of(context).textTheme.display1,
+            style: Theme.of(context).textTheme.display1.apply(
+              color: Colors.black
+            ),
             decoration: InputDecoration(
                 labelStyle: Theme.of(context).textTheme.title,
                 errorText:
@@ -216,14 +231,18 @@ class _UnitConverterState extends State<UnitConverter> {
           InputDecorator(
             child: Text(
               _outputValue,
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.display1.apply(
+                  color: Colors.black
+              ),
             ),
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(width: 1.0, color: Colors.black),
                   borderRadius: BorderRadius.circular(16.0)),
               labelText: 'Output',
-              labelStyle: Theme.of(context).textTheme.display1,
+              labelStyle: Theme.of(context).textTheme.title.apply(
+                  color: Colors.black
+              ),
             ),
           ),
           _createDropDown(_toValue.name, _updateToConversion)
