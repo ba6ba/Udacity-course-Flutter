@@ -64,8 +64,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Gotham
+    - family: Gotham-Light
       fonts:
-        - asset: fonts/GothamRnd-Bold.otf
+        - asset: fonts/GothamRnd-Light.otf
+    - family: Gotham-Medium
+      fonts:
+        - asset: fonts/GothamRnd-Medium.otf
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -75,7 +75,9 @@ class _BackdropTitle extends AnimatedWidget {
   Widget build(BuildContext context) {
     final Animation<double> animation = this.listenable;
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.title,
+      style: Theme.of(context).textTheme.title.apply(
+        fontFamily: 'Gotham-Medium',
+      ),
       softWrap: false,
       overflow: TextOverflow.ellipsis,
       // Here, we do a custom cross fade between backTitle and frontTitle.
@@ -236,7 +238,10 @@ class _BackdropState extends State<Backdrop> with
               onTap: _toggleBackdropPanelVisibility,
               onVerticalDragUpdate: _handleDragUpdate,
               onVerticalDragEnd: _handleDragEnd,
-              title: Text(widget.currentCategory.name),
+              title: Text(widget.currentCategory.name,
+              style: Theme.of(context).textTheme.subhead.apply(
+                fontFamily: 'Gotham-Medium',
+              ),),
               child: widget.frontPanel,
               colorSwatch: widget.currentCategory.color,
             ),
