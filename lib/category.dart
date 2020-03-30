@@ -7,7 +7,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterudacityapp/unit.dart';
+import 'package:UnitConverterApp/unit.dart';
 
 /// A custom [Category] widget.
 ///

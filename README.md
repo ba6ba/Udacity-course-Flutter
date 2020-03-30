@@ -1,4 +1,4 @@
-# flutterudacityapp
+# UnitConverterApp
 
 A flutter application followed by Udacity Course.
 

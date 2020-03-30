@@ -4,7 +4,7 @@
 
 // You can read about packages here: https://flutter.io/using-packages/
 import 'package:flutter/material.dart';
-import 'package:flutterudacityapp/category_screen.dart';
+import 'package:UnitConverterApp/category_screen.dart';
 
 import 'category.dart';
 

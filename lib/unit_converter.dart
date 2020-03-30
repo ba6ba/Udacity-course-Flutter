@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterudacityapp/api.dart';
-import 'package:flutterudacityapp/category.dart';
-import 'package:flutterudacityapp/unit.dart';
+import 'package:UnitConverterApp/api.dart';
+import 'package:UnitConverterApp/category.dart';
+import 'package:UnitConverterApp/unit.dart';
 
 const _padding = EdgeInsets.all(16.0);
 

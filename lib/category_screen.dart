@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:flutterudacityapp/api.dart';
-import 'package:flutterudacityapp/backdrop.dart';
-import 'package:flutterudacityapp/category.dart';
-import 'package:flutterudacityapp/category_tile.dart';
-import 'package:flutterudacityapp/unit.dart';
-import 'package:flutterudacityapp/unit_converter.dart';
+import 'package:UnitConverterApp/api.dart';
+import 'package:UnitConverterApp/backdrop.dart';
+import 'package:UnitConverterApp/category.dart';
+import 'package:UnitConverterApp/category_tile.dart';
+import 'package:UnitConverterApp/unit.dart';
+import 'package:UnitConverterApp/unit_converter.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen();

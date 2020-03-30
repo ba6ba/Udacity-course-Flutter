@@ -1,4 +1,4 @@
-package com.example.flutterudacityapp
+package com.example.UnitConverterApp
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
