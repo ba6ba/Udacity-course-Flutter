@@ -162,9 +162,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
     if(Orientation.portrait == deviceOrientation) {
       return ListView.separated(
         itemBuilder: (BuildContext context, int index) {
+          var category = _categories[index];
           return CategoryTile(
-            category: _categories[index],
-            onTap: _onCategoryTap,
+            category: category,
+            onTap: category.name == apiCategory['name'] && category.units
+                .isEmpty ? null : _onCategoryTap,
           );
         },
         separatorBuilder: (BuildContext context, int index) {
@@ -186,7 +188,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
               padding: EdgeInsets.all(5.0),
               child: CategoryTile(
                 category: category,
-                onTap: _onCategoryTap,
+                onTap: category.name == apiCategory['name'] && category.units
+                    .isEmpty ? null : _onCategoryTap,
               ),
             );
       }).toList(),

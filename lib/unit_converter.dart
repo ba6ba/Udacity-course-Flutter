@@ -25,6 +25,7 @@ class _UnitConverterState extends State<UnitConverter> {
   List<DropdownMenuItem> _dropDownMenuItems = List();
   bool _showValidationError = false;
   final _inputKey = GlobalKey(debugLabel: 'InputText');
+  bool _showErrorUI = false;
 
   @override
   void initState() {
@@ -93,9 +94,17 @@ class _UnitConverterState extends State<UnitConverter> {
       final api = Api();
       final conversion = await api.convert(apiCategory['route'], _inputValue.toString(),
           _fromValue.name, _toValue.name);
-      setState(() {
-        _outputValue = format(conversion);
-      });
+      if(conversion == null) {
+        setState(() {
+          _showErrorUI = true;
+        });
+      }
+      else {
+        setState(() {
+          _showErrorUI = false;
+          _outputValue = format(conversion);
+        });
+      }
     }
     else {
       setState(() {
@@ -175,20 +184,89 @@ class _UnitConverterState extends State<UnitConverter> {
 
   @override
   Widget build(BuildContext context) {
-    final input = Padding(
+    if(widget.category.units == null
+        || (widget.category.name == apiCategory['name'] && _showErrorUI)) {
+      return showError();
+    }
+
+    final converter = SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[inputWidget(), arrows(), outputWidget()],
+      ),
+    );
+
+    return Padding(
+      padding: _padding,
+      child: OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
+          if (Orientation.portrait == orientation) {
+            return converter;
+          } else {
+            return Center(
+              child: Container(
+                width: 450.0,
+                child: converter,
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget showError() {
+    return SingleChildScrollView(
+      child: Container(
+        margin: _padding,
+        padding: _padding,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.0),
+            color: Colors.white
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              child: Icon(
+                Icons.error_outline,
+                size: 80.0,
+                color: Colors.red,
+              ),
+              padding: _padding,
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+              child: Text(
+                "Oh no! Something went wrong!",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.subhead.apply(
+                    color: Colors.red,
+                    fontFamily: 'DroidSans-Bold'
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget inputWidget() {
+    return Padding(
       padding: _padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           TextField(
             key: _inputKey,
-            style: Theme.of(context).textTheme.display1.apply(
-              color: Colors.black
+            style: Theme.of(context).textTheme.headline.apply(
+                color: Colors.black
             ),
             decoration: InputDecoration(
                 labelStyle: Theme.of(context).textTheme.title,
-                errorText:
-                    _showValidationError ? 'Invalid number entered' : null,
+                errorText: _showValidationError ? 'Invalid number entered' : null,
                 labelText: 'Input',
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -214,16 +292,21 @@ class _UnitConverterState extends State<UnitConverter> {
         ],
       ),
     );
+  }
 
-    final arrows = RotatedBox(
+  Widget arrows() {
+    return RotatedBox(
       quarterTurns: 1,
       child: Icon(
         Icons.compare_arrows,
-        size: 40.0,
+        size: 30.0,
+        color: Colors.black,
       ),
     );
+  }
 
-    final output = Padding(
+  Widget outputWidget() {
+    return Padding(
       padding: _padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -231,7 +314,7 @@ class _UnitConverterState extends State<UnitConverter> {
           InputDecorator(
             child: Text(
               _outputValue,
-              style: Theme.of(context).textTheme.display1.apply(
+              style: Theme.of(context).textTheme.headline.apply(
                   color: Colors.black
               ),
             ),
@@ -247,31 +330,6 @@ class _UnitConverterState extends State<UnitConverter> {
           ),
           _createDropDown(_toValue.name, _updateToConversion)
         ],
-      ),
-    );
-
-    final converter = SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[input, arrows, output],
-      ),
-    );
-
-    return Padding(
-      padding: _padding,
-      child: OrientationBuilder(
-        builder: (BuildContext context, Orientation orientation) {
-          if (Orientation.portrait == orientation) {
-            return converter;
-          } else {
-            return Center(
-              child: Container(
-                width: 450.0,
-                child: converter,
-              ),
-            );
-          }
-        },
       ),
     );
   }

@@ -76,7 +76,7 @@ class _BackdropTitle extends AnimatedWidget {
     final Animation<double> animation = this.listenable;
     return DefaultTextStyle(
       style: Theme.of(context).textTheme.title.apply(
-        fontFamily: 'Gotham-Medium',
+        fontFamily: 'DroidSans-Bold',
       ),
       softWrap: false,
       overflow: TextOverflow.ellipsis,
@@ -240,7 +240,7 @@ class _BackdropState extends State<Backdrop> with
               onVerticalDragEnd: _handleDragEnd,
               title: Text(widget.currentCategory.name,
               style: Theme.of(context).textTheme.subhead.apply(
-                fontFamily: 'Gotham-Medium',
+                fontFamily: 'DroidSans-Bold',
               ),),
               child: widget.frontPanel,
               colorSwatch: widget.currentCategory.color,

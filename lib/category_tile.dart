@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterudacityapp/category.dart';
-import 'unit_converter.dart';
 
 final BorderRadius _borderRadius = BorderRadius.vertical(
     top: Radius.circular(20), bottom: Radius.circular(20));
@@ -12,7 +11,6 @@ class CategoryTile extends StatelessWidget {
 
   const CategoryTile({Key key, @required this.category, @required this.onTap})
       : assert(category != null),
-        assert(onTap != null),
         super(key: key);
 
   /// Builds a custom widget that shows [Category] information.
@@ -25,7 +23,8 @@ class CategoryTile extends StatelessWidget {
   // See https://docs.flutter.io/flutter/material/Theme-class.html
   Widget build(BuildContext context) {
     return Material(
-      color: category.color.withAlpha(80),
+      color: onTap == null ? Color.fromRGBO(50, 50, 50, 0.2)
+          : category.color.withAlpha(80),
       borderRadius: _borderRadius,
       child: Container(
         height: category.categoryHeight,
@@ -33,7 +32,7 @@ class CategoryTile extends StatelessWidget {
           splashColor: category.color['splash'],
           highlightColor: category.color['highlight'],
           borderRadius: _borderRadius,
-          onTap: () => onTap(category),
+          onTap: onTap == null ? null : () => onTap(category),
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Row(
@@ -48,11 +47,11 @@ class CategoryTile extends StatelessWidget {
                 ),
                 Center(
                     child: Text(
-                  category.name,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    color: Colors.black54,
+                      category.name,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black,
                   ),
                 ))
               ],
