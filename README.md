@@ -1,16 +1,43 @@
-# UnitConverterApp
+# Unit Converter app
+It is a basic unit converter app built using Flutter and Dart.
+It uses some in app  conversion techniques and some conversion using Udacity flutter currency converter API.
+Takes input from input field and show desired conversion into output by using existing units.
 
-A flutter application followed by Udacity Course.
+### Interactive UI / Compatibility
+- Beautiful & Interactive UI design
+- Supports both Android/iOS
 
-## Getting Started
+# Units :
+- Length
+- Area
+- Volume
+- Mass
+- Time
+- Digital Storage
+- Energy
+- Currency
 
-This project is a starting point for a Flutter application.
+### Units Listing
+![Screenshot_1585601544](https://user-images.githubusercontent.com/26377145/77961142-d33f1400-72f2-11ea-8813-1acc3477025d.png)
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### Length conversion Example
+![Screenshot_1585601534](https://user-images.githubusercontent.com/26377145/77961029-aab71a00-72f2-11ea-8214-9972d5ee016a.png)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+### Show error when api is not working / No Internet connection
+![Screenshot_1585601552](https://user-images.githubusercontent.com/26377145/77961218-ef42b580-72f2-11ea-8fdd-741db58ecad5.png)
+
+
+### Contribute
+- Fork it
+- Create your feature branch (git checkout -b my-new-feature)
+- Commit your changes (git commit -am 'Add some feature')
+- Push to the branch (git push origin my-new-feature)
+- Create new Pull Request
+
+<div>
+  <sub>This project is inspired from
+  <a href="https://github.com/flutter/udacity-course">Udacity flutter course</a>
+</div>
+<br/>
